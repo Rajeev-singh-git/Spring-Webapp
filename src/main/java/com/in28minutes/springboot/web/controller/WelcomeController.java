@@ -1,5 +1,6 @@
 package com.in28minutes.springboot.web.controller;
 
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
@@ -19,7 +20,7 @@ public class WelcomeController {
 		model.put("name", getLoggedInUserName());
 		return "welcome";
 	}
-	
+	/**
 	private String getLoggedInUserName() {
 		Object principal =
 				SecurityContextHolder.getContext().getAuthentication().getPrincipal();
@@ -28,6 +29,13 @@ public class WelcomeController {
 			return ((UserDetails) principal).getUsername(); //type_casting principal
 		}
 		return principal.toString();
+	} */
+	
+	private String getLoggedInUserName() {
+		Authentication authentication =
+				SecurityContextHolder.getContext().getAuthentication();
+	
+		return authentication.getName();
 	}
 				
 		

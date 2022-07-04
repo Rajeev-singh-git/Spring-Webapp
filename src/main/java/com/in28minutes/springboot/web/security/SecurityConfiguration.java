@@ -9,25 +9,26 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 @Configuration //To add more configuration
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
+	
 	// Overiding some methods of WebSecurityConfigurerAdapter to add our configuration
     //Create  User/PW = Rajeev/dummy
 	
-	@Autowired
-    public void configureGlobalSecurity(AuthenticationManagerBuilder auth)
-            throws Exception {
-        auth.inMemoryAuthentication().withUser("Rajeev").password("{noop}dummy")
-                .roles("USER", "ADMIN");
-    }
+ //	@Autowired
+ //   public void configureGlobalSecurity(AuthenticationManagerBuilder auth)
+ //           throws Exception {
+ //       auth.inMemoryAuthentication().withUser("Rajeev").password("{noop}dummy")
+ //               .roles("USER", "ADMIN");
+ //   }
 	
 
-	@Override
-    protected void configure(HttpSecurity http) throws Exception {
-        http.authorizeRequests().antMatchers("/login", "/h2-console/**").permitAll()
-                .antMatchers("/", "/*todo*/**").access("hasRole('USER')").and()
-                .formLogin();
+//	@Override
+ //   protected void configure(HttpSecurity http) throws Exception {
+ //      http.authorizeRequests().antMatchers("/login", "/h2-console/**").permitAll()
+ //              .antMatchers("/", "/*todo*/**").access("hasRole('USER')").and()
+ //              .formLogin();
         
   //      http.csrf().disable();
   //      http.headers().frameOptions().disable();
-}
+  //   } 
 	
 }
