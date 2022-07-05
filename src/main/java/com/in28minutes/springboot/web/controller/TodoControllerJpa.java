@@ -2,6 +2,7 @@ package com.in28minutes.springboot.web.controller;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 
 import javax.validation.Valid;
 
@@ -20,11 +21,14 @@ import org.springframework.web.bind.annotation.RequestParam;
 import com.in28minutes.springboot.web.model.Todo;
 import com.in28minutes.springboot.web.service.TodoService;
 
-//@Controller
-public class TodoController {
+@Controller
+public class TodoControllerJpa {
 
 	@Autowired
 	TodoService service;
+	
+	@Autowired
+	TodoRepository todoRepository;
 	
 	@InitBinder
 	protected void initBinder(WebDataBinder binder) {
@@ -36,8 +40,11 @@ public class TodoController {
 	
 	@RequestMapping(value = "/list-todos", method = RequestMethod.GET)
 	public String showTodos(ModelMap model) {
-		String name = getLoggedInUserName(model);
-		model.put("todos", service.retrieveTodos(name));
+		String USER = getLoggedInUserName(model);
+		//model.put("todos", service.retrieveTodos(name));
+		
+		List<Todo> todos = todoRepository.findByUser(USER);
+		model.addAttribute("todos", todos);
 		return "list-todos";
 	}
 
