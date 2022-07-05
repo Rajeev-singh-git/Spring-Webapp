@@ -3,10 +3,20 @@ package com.in28minutes.springboot.web.model;
 
 import java.util.Date;
 
+
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
 import javax.validation.constraints.Size;
 
+@Entity
 public class Todo {
+	
+	@Id
+	@GeneratedValue
     private int id;
+	
+	//@Column(name="newColumnName")
     private String user;
     
     @Size(min=10, message="Enter atleast 10 character")
@@ -104,3 +114,10 @@ public class Todo {
     }
 
 }
+
+/**By default table will be created as class name. 
+ * We can customize table name
+    by using annotation @Entity(name="TodoAbc") */
+
+/**  we  can customize even column name 
+ by using annotation "@Column(name="newColumnName") */
