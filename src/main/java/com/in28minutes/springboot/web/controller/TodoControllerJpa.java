@@ -24,8 +24,8 @@ import com.in28minutes.springboot.web.service.TodoService;
 @Controller
 public class TodoControllerJpa {
 
-	@Autowired
-	TodoService service;
+	//@Autowired
+	//TodoService service;
 	
 	@Autowired
 	TodoRepository todoRepository;
@@ -41,8 +41,6 @@ public class TodoControllerJpa {
 	@RequestMapping(value = "/list-todos", method = RequestMethod.GET)
 	public String showTodos(ModelMap model) {
 		String USER = getLoggedInUserName(model);
-		//model.put("todos", service.retrieveTodos(name));
-		
 		List<Todo> todos = todoRepository.findByUser(USER);
 		model.addAttribute("todos", todos);
 		return "list-todos";
@@ -72,11 +70,8 @@ public class TodoControllerJpa {
 
 	@RequestMapping(value = "/delete-todo", method = RequestMethod.GET)
 	public String deleteTodo(@RequestParam int id) {
-
-		if(id==1)
-			throw new RuntimeException("Something went wrong");
 		
-		service.deleteTodo(id);
+		todoRepository.deleteById(id);
 		return "redirect:/list-todos";
 	}
 
@@ -87,14 +82,18 @@ public class TodoControllerJpa {
 			return "todo";
 		}
 		
-		service.addTodo(getLoggedInUserName(model), todo.getDesc(), todo.getTargetDate(),
-				false);
+//		service.addTodo(getLoggedInUserName(model), todo.getDesc(), todo.getTargetDate(),
+//				false);
+		String USER = getLoggedInUserName(model);
+		todo.setUser(USER);
+		todoRepository.save(todo);
 		return "redirect:/list-todos";
 	}
 	
 	@RequestMapping(value = "/update-todo", method = RequestMethod.GET)
 	public String showUpdateTodoPage(@RequestParam int id, ModelMap model) {
-		Todo todo = service.retrieveTodo(id);
+	//	Todo todo = service.retrieveTodo(id);
+		Todo todo = todoRepository.findById(id).get();
 		model.put("todo", todo);
 	    return "todo";
 	}
@@ -107,8 +106,8 @@ public class TodoControllerJpa {
 		}
 			
 		todo.setUser(getLoggedInUserName(model));
-		
-		service.updateTodo(todo);
+		todoRepository.save(todo);
+	//	service.updateTodo(todo);
 		
 	//	service.addTodo((String) model.get("name"), todo.getDesc(), new Date(),
 	//			false);
